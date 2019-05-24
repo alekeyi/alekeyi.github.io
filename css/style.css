@@ -1,4 +1,330 @@
-/*
-  input boxes
-  buttons
-*/
+#app {
+  margin: 3rem auto;
+  width: 640px;
+  padding-top: 1rem;
+  /*padding-bottom: 0rem;*/
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background: #fafafa;
+  box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 3rem;
+  color: #B2DFDB;
+  margin: -1rem -2rem 1rem;
+  padding: 1.5rem 2rem;
+  background: #0185D1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+.title .typcn {
+  color: #B2DFDB;
+  position: absolute;
+  left: 0rem;
+  top: -.75rem;
+  font-size: 7rem;
+}
+
+.entry, .new {
+  font-size: 0;
+  position: relative;
+}
+
+.entry + .entry {
+  margin-top: 2.25%;
+}
+
+.long, .short {
+  font-size: .8rem;
+  display: inline-block;
+  margin: 0 2.25% 0 0;
+}
+
+.header {
+  margin: -1rem -2rem 1rem;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.header .long, .header .short {
+  font-size: .65rem;
+}
+
+.long {
+  width: 80%;
+}
+
+.short {
+  width: 12%;
+}
+.short:last-child {
+  margin-right: 0;
+}
+
+.totals {
+  color: rgba(0, 0, 0, 0.65);
+  margin: 1.5rem -2rem;
+  background: rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: 0;
+  border-right: 0;
+  padding: 1rem 2rem;
+}
+.totals .long, .totals .short {
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+.totals .long {
+  font-weight: 400;
+  text-align: right;
+}
+.totals .short {
+  text-align: center;
+}
+
+.fade-transition {
+  transition: all .3s ease;
+  opacity: 1;
+  height: 1.5rem;
+}
+
+.fade-enter, .fade-leave {
+  opacity: 0;
+  height: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  color: #444;
+  /*background: linear-gradient(25deg, #5EF726, #018ED5);*/
+  background: linear-gradient(25deg, #5EF726, #01CCFE);
+  /*background: linear-gradient(25deg, #FFEB3B, #008c79);*/
+}
+
+input {
+  transition: all .15s ease-in-out;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: .15rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+input:hover {
+  color: rgba(0, 0, 0, 0.75);
+  border-color: rgba(0, 0, 0, 0.75);
+}
+input:focus {
+  outline: none;
+  border-bottom: 3px solid black;
+  margin-bottom: -2px;
+}
+
+.material-button, .material-delete {
+  transition: all .15s ease-in-out;
+  background: #a1e3cc;
+  border: none;
+  background: #0185D1;
+  font-size: 3rem;
+  position: absolute;
+  right: -3.25rem;
+  top: -.75rem;
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 50%;
+  color: #fafafa;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.15);
+}
+.material-button:hover, .material-delete:hover {
+  background: #1DE9B6;
+  box-shadow: 1px 3px 3px 0 rgba(0, 0, 0, 0.15);
+}
+.material-button:active, .material-delete:active {
+  top: -.7rem;
+  outline: 0;
+  box-shadow: none;
+}
+
+.material-delete {
+  font-size: 1rem;
+  line-height: 1rem;
+  height: 2rem;
+  width: 2rem;
+  top: 0;
+  right: -1.5rem;
+  transform: rotate(45deg);
+  background: none;
+  color: rgba(0, 0, 0, 0.15);
+  box-shadow: none;
+}
+.material-delete:hover {
+  background: rgba(0, 0, 0, 0.075);
+  color: #fafafa;
+  box-shadow: none;
+}
+.material-delete:active {
+  color: #B71C1C;
+  background: transparent;
+  top: 0;
+}
+
+.search-title {
+  /*font-size: 60px !important;
+  margin-bottom: 10px;
+  color: #4c5b82;*/
+  font-weight: 100;
+  font-size: 1.5rem;
+  color: #B2DFDB;
+  margin: 0rem -2rem 1rem;
+  /*margin-top: 0px;*/
+  padding: 1rem 1rem;
+  background: #0185D1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+}
+
+form { margin-bottom: 30px; }
+
+#input {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+h2 { font-size: 16px; }
+
+h3 { font-size: 13px; }
+
+.results {
+  width: 100%;
+}
+
+.itemBar {
+  background-color: #E7FAFE;
+  opacity: 0.8;
+  transition: 0.2s;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  border-right: 7px solid #B2DFDB;
+  border-top: thin solid #B2DFDB;
+}
+
+.itemBar:hover { opacity: 1; }
+
+.profile-title {
+  font-weight: 100;
+  font-size: 1.5rem;
+  color: #B2DFDB;
+  margin: 0rem -2rem 1rem;
+  padding: 1rem 1rem;
+  background: #0185D1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #E6E6E6;
+  /*padding: 1px 1px;*/
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 7.45rem;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  /*padding: auto;*/
+  border-top: none;
+  animation: fadeEffect 1s;
+  /*border: 1px solid #ccc;*/
+}
+
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Style the close button */
+.topright {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.75);/*
+  background: #0185D1;*/
+  /*width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 50%;
+  position: relative;
+  right: -3.25rem;
+  top: -.75rem;
+  display: block;
+  border: none;*/
+}
+
+.topright:hover {
+  /*color: rgba(0, 0, 0, 0.75);*/
+  color: #B71C1C;
+  background: rgba(0, 0, 0, 0.075);
+  box-shadow: 1px 3px 3px 0 rgba(0, 0, 0, 0.15);
+  /*box-shadow: none;*/
+}
+
+.topright:active {
+  color: #530000;
+  background: transparent;
+  top: 0;
+}
+
+/* Divide tab buttons from rest*/
+.dividing-space {
+  padding: 10px;
+}
