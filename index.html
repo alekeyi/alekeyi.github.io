@@ -1,21 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
+
 <head>
   <meta charset="UTF-8">
-  <title>HREXT09 R00lz!</title>
-  <script
-          src="https://code.jquery.com/jquery-3.3.1.js"
-          integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-          crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <title>Drinkify</title>
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,900'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css'>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.0/build/pure-min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+
 </head>
+
 <body>
-  <form>
-    <input id="keyInput" type="text" placeholder="key"></input>
-    <input id="valueInput" type="text" placeholder="value"></input>
-    <button id="createButton" type='submit'>Create</button>
-    <button id="updateButton" type='submit'>Update</button>
-  </form>
-  <script src='app/app.js'></script>
+
+  <div id="app">
+  <h1 class="title"><i class="typcn typcn-beer"></i> Drinkify</h1>
+  <div class="entry header">
+    <div class="long">Alcohol/Drink</div>
+    <div class="short">Calories</div>
+  </div>
+  <div class="entry" v-for="entry in entries" transition="fade">
+    <input type="text" name="drink-entry.id" v-model="entry.drink" class="long" v-on:keyup.enter="saveEntry">
+    <input type="number" name="calories-entry.id" v-model="entry.calories" class="short" v-on:keyup.enter="saveEntry">
+    <button class="material-delete" v-on:click="removeEntry($index)">
+      <i class="typcn typcn-plus"></i>
+    </button>
+  </div>
+  <div class="totals">
+    <div class="long">Totals:</div>
+    <div class="short">{{ totalCalories }}</div>
+  </div>
+  <div class="new">
+    <input type="text" v-model="newDrink" v-on:keyup.enter="addEntry" class="long" placeholder="Drink">
+    <input type="number" v-model="newCalories" v-on:keyup.enter="addEntry" class="short" placeholder="Calories">
+    <button class="material-button" v-on:click="addEntry()">
+      <i class="typcn typcn-plus"></i>
+    </button>
+  </div>
+  <div class="dividing-space"></div>
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Search')">Search</button>
+    <button class="tablinks" onclick="openTab(event, 'Profile')">Profile</button>
+  </div>
+
+  <!-- Tab content -->
+  <div id="Search" class="tabcontent">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h1 class="search-title"><i class="typcn typcn-zoom"></i>Search</h1>
+    <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+    <form class="pure-form" id="searchForm">
+          <input class="pure-input-rounded" id='input'>
+          <button type="button" class="pure-button" onclick="searchItem()">Search Drink</button>
+    </form>
+    <div class="results"></div>
+  </div>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h1 class="search-title"><i class="typcn typcn-zoom"></i>Search</h1>
+    <form class="pure-form" id="searchForm">
+          <input class="pure-input-rounded" id='input'>
+          <button type="button" class="pure-button" onclick="searchItem()">Search Drink</button>
+    </form>
+    <div class="results"></div> -->
+  <div id="Profile" class="tabcontent">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h1 class="profile-title"><i class="typcn typcn-user"></i>Profile</h1>
+    <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+    <!-- <form name="calorieProfile" id="calorieProfileForm" action="#">
+    <table cellspacing="4">
+      <tr><td><label for="age">Age: </label></td><td><input type="text" size="30" maxlength="155" name="age" ><label class="inline">years </label></td></tr>
+      <tr><td><label for="gender">Gender: </label></td><td><div class="field field-medium">
+          <select name="gender">
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+
+          </select></td></tr>
+      <tr><td><div class="field-outer">
+      <label for="weight" class="top-label">Your weight:</label>
+      <div class="field-items">
+        <div class="field field-large">
+          <input type="text" name="weight" id="weight" inputmode="numeric" pattern="[0-9]*">
+        </div>--  /.field-large --
+        <div class="field field-small">
+          <select name="weight_unit">
+            <option value="lb">lb</option>
+            <option value="kg">kg</option>
+          </select>
+        </div>--  /.field-small --
+      </div>--  /.field-items --
+    </div>--  /.field-outer --</td></tr>
+      <tr><td colspan="2"><input type="button" name="submit" value="Calorie estimate" onclick="showFormData(this.form);" ></td></table>
+    </form> -->
+    <div class="css-1mh1l7c">
+    <div class="calorie_calculator_nav" id="calorie_calculator_nav"><a class="css-1gohtld css-krlc5" id="imperial">Standard units (US)</a><a class="css-1gohtld false" id="metric">Metric units</a></div>
+    <div class="css-tb6ya0">
+        <div id="form_container">
+            <div class="css-1xa411s">
+                <div class="css-ljo5ss css-9q7zm4">
+                    <label class="css-1tleqdi">Gender</label>
+                    <select id="gender" class="css-82mhoy">
+                        <option value="f">Female</option>
+                        <option value="m">Male</option>
+                    </select>
+                </div>
+                <div class="css-ljo5ss css-9q7zm4">
+                    <label class="css-1tleqdi">Age</label>
+                    <input type="number" step="1" min="0" id="age" placeholder="Years..." class="css-aw0kbe" value="">
+                </div>
+            </div>
+            <div class="css-9q7zm4">
+                <label class="css-1tleqdi">Weight</label>
+                <input type="number" step="0.1" min="0" id="weight" placeholder="Pounds..." class="css-aw0kbe">
+            </div>
+            <div class="css-1xa411s">
+                <label class="css-1tleqdi">Height</label><span class="css-l04qfd"><input type="number" id="heightFeet" placeholder="Feet..." class="css-aw0kbe"></span><span class="css-l04qfd"><input type="number" step="0.1" min="0" id="heightInches" placeholder="Inches..." class="css-aw0kbe"></span></div>
+            <div class="css-9q7zm4">
+                <label class="css-1tleqdi">Activity</label>
+                <select id="lifestyle" class="css-82mhoy">
+                    <option value="">— Select from the dropdown —</option>
+                    <option value="sedentary">Sedentary lifestyle</option>
+                    <option value="slightly_active">Slightly active</option>
+                    <option value="moderately_active">Moderately active</option>
+                    <option value="active">Active lifestyle</option>
+                    <option value="very_active">Very active lifestyle</option>
+                </select>
+            </div>
+            <div class="css-9q7zm4">
+                <button type="button" class="css-1j6rb0m">Calculate</button>
+            </div>
+        </div>
+    </div>
+    <div class="results"></div>
+  </div>
+</div>
+</div>
+  <script src='https://cdn.jsdelivr.net/vue/latest/vue.js'></script>
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script  src="js/app.js"></script>
+
+
+
+
 </body>
+
 </html>
