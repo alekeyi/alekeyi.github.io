@@ -1,71 +1,106 @@
-/*
+var myapp = new Vue({
+  el: '#app',
+  data: {
+    newDrink: '',
+    newCalories: '',
+    totalCalories: '',
+    entries: []
+  },
+  methods: {
+    addEntry: function () {
+      var drink = this.newDrink.trim()
+      var calories = parseInt(this.newCalories.trim()) || 0
+      if (drink && calories) {
+        // if (drink === 'This is an example'){
+        //   this.entries.shift();
+        // }
+        this.entries.push({ drink: drink, calories: calories })
+        this.newDrink = ''
+        this.newCalories = ''
+        calculateTotals(this)
+      } else {
+        alert("You need at least a drink and calories!")
+      }
+    },
+    removeEntry: function (index) {
+      this.entries.splice(index, 1)
+      calculateTotals(this)
+    },
+    saveEntry: function() {
+      calculateTotals(this)
+    }
+  }
+})
 
- ### Basic Reqs
-- [ ] Where to store data? (localstorage)
-- [ ] How to caputure data? (web form)
-- [ ] How to modify data? (update action, delete action)
-- [ ] How to view data? (style?)
-- [ ] UI/UX considerations (how are we going to use this)
-
-*/
-
-//localStorage interaction function
-//get item
-var getItem = function(key) {
-  return window.localStorage.getItem(key);
+function calculateTotals(app) {
+  app.totalCalories = parseTotals(app.entries, 'calories')
 }
 
-//create
-var createItem = function(key, value) {
-  return window.localStorage.setItem(key, value);
+calculateTotals(myapp)
+
+function parseTotals(array, element) {
+  var sum = 0
+  array.forEach(function(entry) {
+    sum = sum + parseInt(entry[element])
+  }, sum, element)
+  return sum
 }
 
-//update
-var updateItem = function(key, value) {
-  return window.localStorage.setItem(key, value);
-}
+function getSearchResults(item) {
+  var resultItem;
+  $(".results").html("");
 
-//delete
-var deleteItem = function(key) {
-  return window.localStorage.removeItem(key);
-}
-
-//clear everything
-var clearEverything = function() {
-  return window.localStorage.clear();
-}
-
-var keyExists = function(key) {
-  var currentValue = getItem(key);
-  return currentValue !== null;
-}
-
-
-///////////////////////////////////////////
-//event handlers for the buttons and ... possibly the inputboxes
-  //preventdefault on button clicks
-$(document).ready(function() {
-  $('#createButton').click(function(event) {
-    event.preventDefault();
-
-    var currentKey = $("#keyInput").val();
-    var currentValue = $("#valueInput").val();
-    if (keyExists(currentKey)) {
-      //current key exists, do something error-handle-y
-    } else {
-      createItem(currentKey, currentValue);
+  $.ajax({
+    type: 'GET',
+    async: false,
+    url: 'https://api.nutritionix.com/v1_1/search/'+item+'?fields=item_name' +
+    '%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat&appId=91d21742&appKey=016757a1fa92455923691cf0fd341fc3',
+    success: function(data) {
+      resultItem = data.hits;
     }
   });
 
-  $('#updateButton').click(function(event) {
-    event.preventDefault();
-
-    var currentKey = $("#keyInput").val();
-    var currentValue = $("#valueInput").val();
-    if (keyExists(currentKey)) {
-      updateItem(currentKey, currentValue);
-    } else {
-      //current key doesnt exist, do stuff
-    }
+  resultItem.map(function(i) {
+    var item = i.fields
+    // console.log(item)
+    $('.results').append(
+      '<div class="itemBar">'+
+        '<h2>' + item.item_name + '<h2>' +
+        '<h3>Calories: ' + item.nf_calories + '<h3>' +
+        '<h3>Serving Size: ' + item.nf_serving_size_qty + ' ' + item.nf_serving_size_unit +'<h3>' +
+      '</div>'
+     );
   });
+}
+
+function searchItem() {
+  var formVal = document.getElementById('input').value;
+  document.getElementById('searchForm').reset();
+  getSearchResults(formVal);
+}
+
+$("#searchForm").submit(function(e) {
+    e.preventDefault();
+    searchItem();
 });
+
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
